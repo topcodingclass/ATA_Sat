@@ -1,6 +1,15 @@
-import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity} from 'react-native'
-import React from 'react'
-import AppLoading from 'expo-app-loading';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  SafeAreaView,
+  ScrollView,
+} from "react-native";
+import React from "react";
+import AppLoading from "expo-app-loading";
 import {
   useFonts,
   Roboto_100Thin,
@@ -15,16 +24,18 @@ import {
   Roboto_700Bold_Italic,
   Roboto_900Black,
   Roboto_900Black_Italic,
-} from '@expo-google-fonts/roboto';
-
+} from "@expo-google-fonts/roboto";
 
 const DATA = [
   {
     id: 1,
     title: "Leo the Lion",
-    materials:
-      "Plastic Plate, Yellow Lanyard, Beige Paint, White Pipe Cleaner",
-      step: [{img:require("../assets/1-1.png")},{img:require("../assets/1-2.png")},{img:require("../assets/1-3.png")}],
+    materials: "Plastic Plate, Yellow Lanyard, Beige Paint, White Pipe Cleaner",
+    step: [
+      { img: require("../assets/1-1.png") },
+      { img: require("../assets/1-2.png") },
+      { img: require("../assets/1-3.png") },
+    ],
     src: require("../assets/1.png"),
   },
   {
@@ -96,7 +107,7 @@ const DATA = [
   },
 ];
 
-const Main = ({navigation}) => {
+const Main = ({ navigation }) => {
   let [fontsLoaded] = useFonts({
     Roboto_100Thin,
     Roboto_100Thin_Italic,
@@ -112,33 +123,68 @@ const Main = ({navigation}) => {
     Roboto_900Black_Italic,
   });
 
-  const renderItem = ({item, index}) => (
-    <TouchableOpacity onPress={() => navigation.navigate('Detail',{item:item})} style={{borderWidth:1.4, borderColor:'#AED6F1', borderRadius:10, width:170, height:200, margin:10, justifyContent:'center', alignItems:'center'}}>
-      <Image style={{width:140, height:160, borderRadius:10, marginTop:10}} source= {item.src} />
-      <Text style={{fontFamily:'Roboto_700Bold', marginTop:7, fontSize:15, color:'#1D8348'}}>{item.title}</Text>
+  const renderItem = ({ item, index }) => (
+    <TouchableOpacity
+      onPress={() => navigation.navigate("Detail", { item: item })}
+      style={{
+        borderWidth: 1.4,
+        borderColor: "#AED6F1",
+        borderRadius: 10,
+        width: 170,
+        height: 200,
+        margin: 10,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Image
+        style={{ width: 140, height: 160, borderRadius: 10, marginTop: 10 }}
+        source={item.src}
+      />
+      <Text
+        style={{
+          fontFamily: "Roboto_700Bold",
+          marginTop: 7,
+          fontSize: 15,
+          color: "#1D8348",
+        }}
+      >
+        {item.title}
+      </Text>
     </TouchableOpacity>
-  )
+  );
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
-  return (
-    <View>
-      {/* Logo  */}
-      <View style={{marginTop:20, paddingTop:30, paddingHorizontal:5}}>
-      <Image
-        style={{height:170, width:'100%'}}
-        source={require('../assets/ATALogo.png')}
-      />
+    return (
+      <View style={{ backgroundColor: "white" }}>
+        {/* Logo  */}
+        <View style={{ marginTop: 20, paddingTop: 30, paddingHorizontal: 5 }}>
+          <Image
+            style={{ height: 170, width: "100%" }}
+            source={require("../assets/ATALogo.png")}
+          />
+        </View>
+        {/* List */}
+
+        <View style={{ alignItems: "center", marginBottom: 250 }}>
+          <FlatList
+            style={{ marginBottom: 200 }}
+            data={DATA}
+            renderItem={renderItem}
+            numColumns={2}
+            nestedScrollEnabled
+            LisHeaderComponent={<View></View>}
+            ListFooterComponent={<View></View>}
+            showsVerticalScrollIndicator = {false}
+            keyExtractor={(item) => item.id} 
+          />
+        </View>
       </View>
-      {/* List */}
-      <View style={{alignItems:'center'}}>
-        <FlatList data = {DATA} renderItem={renderItem} numColumns={2} />
-      </View>
-    </View>
-  )
+    );
   }
-}
+};
 
-export default Main
+export default Main;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
